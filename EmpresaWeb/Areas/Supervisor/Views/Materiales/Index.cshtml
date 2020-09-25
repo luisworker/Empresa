@@ -1,0 +1,115 @@
+﻿@model IEnumerable<Domain.Model.ViewModels.MaterialViewModels>
+<title>Materiales</title>
+<div class="form-group col" style="float:left">
+   
+        @using (Html.BeginForm("Index", "Materiales", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+               
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group ">
+                    @Html.Label("Codigo:")
+                    
+                    @Html.Editor("txtCodigo", new { htmlAttributes = new { @class = "form-control", placeholder = "Solo numeros" } })
+                       
+                    
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Nombre o Descripción :")
+                    @Html.Editor("txtNombre", new { htmlAttributes = new { @class = "form-control", placeholder = "Parte de la palabra Ejemp ili=Silicona" } })
+                       
+                    
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-4 col-md-10">
+                        <input type="submit" value="Filtrar" class="btn btn-default" id="Filtrar" />
+                        <input type="button" value="Create" class="btn btn-default" id="CrearMaterial"  />
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+<div style="float:right" >
+    @{ 
+        if (ViewBag.msj != "")
+        {
+            <h4 class="text-success">@ViewBag.msj</h4>
+        }
+    }
+</div>
+
+<table class="table">
+    <tr>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.Codigo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CantDisponible)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CantTotal)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.Codigo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CantDisponible)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CantTotal)
+        </td>
+        <td>
+            @Html.ActionLink("Adicionar", "Adicionar", new {  Codigo=item.Codigo }) |
+            @Html.ActionLink("Administrar", "Asignar", new { Codigo = item.Codigo } ) |
+            @Html.ActionLink("Detalles", "Detalles", new { Codigo = item.Codigo }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>
+@section scripts
+    { 
+    <script>
+        $(document).ready(function () {
+
+            $("#CrearMaterial").click(function () {
+                //$.ajax({
+                //    url:"Materiales/Create",
+                //    method: "GET",
+                //    success: function () { }
+                //})
+                document.location.href = "@Url.Content("Materiales/Create")";
+            })
+
+
+
+        })
+    </script>
+}

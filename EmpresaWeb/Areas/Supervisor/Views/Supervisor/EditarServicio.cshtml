@@ -1,0 +1,93 @@
+﻿@model Domain.Model.EditarServViewModels
+@*@{ViewBag.Titulo = "Editar Servicio " + @Model.IdReporte + " de " + Model.TextTramitadora; }*@
+@using (Html.BeginForm("EditarServicio", "Supervisor", FormMethod.Post, new { id = "from_Edit", @class = "form-horizontal", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>@ViewBag.Titulo</h4>
+        <hr />
+
+        @Html.HiddenFor(d => d.idReporte)
+        <div class="form-group">
+            @Html.LabelFor(model => model.idTrabajador, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("idTrabajador", (IEnumerable<SelectListItem>)ViewBag.Trabajadores, "--Cambiar Operario--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.idTrabajador, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.idEstado, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("idEstado", (IEnumerable<SelectListItem>)ViewBag.Estados, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.idEstado, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextArea("Descripcion", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" id="btn_editar" value="Guardar" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section scripts{
+    <script>
+
+    $(document).ready(function () {
+
+        $("#btn_editar").click(function () {
+
+            $("#from_Edit").submit();
+            
+        })
+        $("#idEstado").change(function () {
+
+           
+            if ((($("#idEstado option:selected").text() == "Sin Asignar") && ($("#idTrabajador option:selected").val() != "")) || (($("#idEstado option:selected").text() != "Sin Asignar") && ($("#idTrabajador option:selected").val() == "")))
+            {
+                $("#idTrabajador").css("border-color", "red");
+                $("#btn_editar").prop("disabled", true);
+            }
+            else {
+                $("#idTrabajador").css("border-color", "#ccc");
+                $("#idEstado").css("border-color", "#ccc");
+                $("#btn_editar").prop("disabled", false);
+               
+            }
+
+        })
+
+        $("#idTrabajador").change(function () {
+
+            if ((($("#idEstado option:selected").text() == "Sin Asignar") && ($("#idTrabajador option:selected").val() != "")) || (($("#idEstado option:selected").text() != "Sin Asignar") && ($("#idTrabajador option:selected").val() == ""))) {
+                $("#idEstado").css("border-color", "red");
+                $("#btn_editar").prop("disabled", true);
+            }
+            else {
+                $("#idEstado").css("border-color", "#ccc");
+                $("#idTrabajador").css("border-color", "#ccc");
+                $("#btn_editar").prop("disabled", false);
+            }
+
+        })
+       
+     })
+    </script>
+}

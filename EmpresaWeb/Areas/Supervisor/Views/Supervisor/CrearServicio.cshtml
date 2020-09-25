@@ -1,0 +1,133 @@
+﻿@model Domain.Model.AddServicioViewModels
+
+@using (Html.BeginForm("CrearServicio","Supervisor",FormMethod.Post,new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Crear Servicio</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.idReporte, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.idReporte, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.idReporte, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IdTrabajadorSII, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("IdTrabajadorSII", (IEnumerable<SelectListItem>)ViewBag.Trabajadores, "--Select--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IdTrabajadorSII, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @*@Html.LabelFor(d => d.Archivo1)
+            @Html.TextBoxFor(d => d.Archivo1, new { type = "file", accept = ".jpg" })
+            @Html.ValidationMessageFor(d => d.Archivo1, "", new { @class = "text-danger" })*@
+            @Html.LabelFor(model => model.RutaDocumento, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                @* @Html.ValidationMessageFor(model => model.idDocumento, "", new { @class = "text-danger" })*@
+                @Html.TextBoxFor(model => model.RutaDocumento, new { @class = "form-control", type = "file", accept = "application/pdf, .doc, .docx, .odf, image.png ,.jpeg, .jpg" })
+                @Html.ValidationMessageFor(model => model.RutaDocumento, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.idEstadoSII, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("idEstadoSII", (IEnumerable<SelectListItem>)ViewBag.Estados, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.idEstadoSII, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.idTramitadora, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("idTramitadora", (IEnumerable<SelectListItem>)ViewBag.Tramitadora, "--Select--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.idTramitadora, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="btn-Crear" type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+@section scripts{
+<script>
+    
+    $(document).ready(function () {
+
+        function CambiarEstado(valor) {
+
+            $("#idEstadoSII option").each(function () {
+                if ($(this).attr('value') != valor) {
+                    $("#idEstadoSII option[value='" + valor + "']").attr("selected", false);
+                }
+                
+            });
+            $("#idEstadoSII option[value='" + valor + "']").attr("selected", true);
+        }
+
+        function CambiarTrabajador(valor) {
+
+            $("#IdTrabajadorSII option").each(function () {
+                if ($(this).attr('value') != valor) {
+                    $("#IdTrabajadorSII option[value='" + valor + "']").attr("selected", false);
+                }
+
+            });
+            $("#IdTrabajadorSII option[value='" + valor + "']").attr("selected", true);
+        }
+
+
+        $("#idEstadoSII").change(function () {
+
+
+            if ((($("#idEstadoSII option:selected").text() == "Sin Asignar") && ($("#IdTrabajadorSII option:selected").val() != "")) || (($("#idEstadoSII option:selected").text() != "Sin Asignar") && ($("#IdTrabajadorSII option:selected").val() == ""))) {
+                $("#IdTrabajadorSII").css("border-color", "red");
+                $("#btn-Crear").prop("disabled", true);
+            }
+            else {
+                $("#IdTrabajadorSII").css("border-color", "#ccc");
+                $("#idEstadoSII").css("border-color", "#ccc");
+                $("#btn-Crear").prop("disabled", false);
+
+            }
+
+        })
+
+        $("#IdTrabajadorSII").change(function () {
+
+            if ((($("#idEstadoSII option:selected").text() == "Sin Asignar") && ($("#IdTrabajadorSII option:selected").val() != "")) || (($("#idEstadoSII option:selected").text() != "Sin Asignar") && ($("#IdTrabajadorSII option:selected").val() == ""))) {
+                $("#idEstadoSII").css("border-color", "red");
+                $("#btn-Crear").prop("disabled", true);
+            }
+            else {
+                $("#idEstadoSII").css("border-color", "#ccc");
+                $("#IdTrabajadorSII").css("border-color", "#ccc");
+                $("#btn-Crear").prop("disabled", false);
+            }
+
+        })
+     })
+</script>
+}

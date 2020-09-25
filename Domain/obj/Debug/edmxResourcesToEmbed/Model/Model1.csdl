@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EmpresaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="EmpresaEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tbEstado" EntityType="EmpresaModel.tbEstado" />
+    <EntitySet Name="tbListaMaterialesServicio" EntityType="EmpresaModel.tbListaMaterialesServicio" />
+    <EntitySet Name="tbMateriales" EntityType="EmpresaModel.tbMateriales" />
+    <EntitySet Name="tbMaterialesAsignados" EntityType="EmpresaModel.tbMaterialesAsignados" />
+    <EntitySet Name="tbServicio" EntityType="EmpresaModel.tbServicio" />
+    <EntitySet Name="tbTrabajador" EntityType="EmpresaModel.tbTrabajador" />
+    <EntitySet Name="tbTramitadora" EntityType="EmpresaModel.tbTramitadora" />
+    <AssociationSet Name="FK_tbServicio_tbEstado" Association="EmpresaModel.FK_tbServicio_tbEstado">
+      <End Role="tbEstado" EntitySet="tbEstado" />
+      <End Role="tbServicio" EntitySet="tbServicio" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbListaMaterialesServicio_tbMaterial" Association="EmpresaModel.FK_tbListaMaterialesServicio_tbMaterial">
+      <End Role="tbMateriales" EntitySet="tbMateriales" />
+      <End Role="tbListaMaterialesServicio" EntitySet="tbListaMaterialesServicio" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbListaMaterialesServicio_tbServicio" Association="EmpresaModel.FK_tbListaMaterialesServicio_tbServicio">
+      <End Role="tbServicio" EntitySet="tbServicio" />
+      <End Role="tbListaMaterialesServicio" EntitySet="tbListaMaterialesServicio" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbMaterialesAsignados_tbMateriales" Association="EmpresaModel.FK_tbMaterialesAsignados_tbMateriales">
+      <End Role="tbMateriales" EntitySet="tbMateriales" />
+      <End Role="tbMaterialesAsignados" EntitySet="tbMaterialesAsignados" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbServicio_tbTrabajador" Association="EmpresaModel.FK_tbServicio_tbTrabajador">
+      <End Role="tbTrabajador" EntitySet="tbTrabajador" />
+      <End Role="tbServicio" EntitySet="tbServicio" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbServicio_tbTramitadora" Association="EmpresaModel.FK_tbServicio_tbTramitadora">
+      <End Role="tbTramitadora" EntitySet="tbTramitadora" />
+      <End Role="tbServicio" EntitySet="tbServicio" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="tbEstado">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Estado" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tbServicio" Relationship="EmpresaModel.FK_tbServicio_tbEstado" FromRole="tbEstado" ToRole="tbServicio" />
+  </EntityType>
+  <EntityType Name="tbListaMaterialesServicio">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idServicio" Type="Int32" Nullable="false" />
+    <Property Name="idMaterial" Type="Int32" Nullable="false" />
+    <Property Name="cantidad" Type="Int32" Nullable="false" />
+    <Property Name="fecha" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="tbMateriales" Relationship="EmpresaModel.FK_tbListaMaterialesServicio_tbMaterial" FromRole="tbListaMaterialesServicio" ToRole="tbMateriales" />
+    <NavigationProperty Name="tbServicio" Relationship="EmpresaModel.FK_tbListaMaterialesServicio_tbServicio" FromRole="tbListaMaterialesServicio" ToRole="tbServicio" />
+  </EntityType>
+  <EntityType Name="tbMateriales">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Codigo" Type="Int32" Nullable="false" />
+    <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tbListaMaterialesServicio" Relationship="EmpresaModel.FK_tbListaMaterialesServicio_tbMaterial" FromRole="tbMateriales" ToRole="tbListaMaterialesServicio" />
+    <NavigationProperty Name="tbMaterialesAsignados" Relationship="EmpresaModel.FK_tbMaterialesAsignados_tbMateriales" FromRole="tbMateriales" ToRole="tbMaterialesAsignados" />
+  </EntityType>
+  <EntityType Name="tbMaterialesAsignados">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idTrabajador" Type="Int32" />
+    <Property Name="idMaterial" Type="Int32" Nullable="false" />
+    <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Cantidad" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="tbMateriales" Relationship="EmpresaModel.FK_tbMaterialesAsignados_tbMateriales" FromRole="tbMaterialesAsignados" ToRole="tbMateriales" />
+  </EntityType>
+  <EntityType Name="tbServicio">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idReporte" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="idTrabajador" Type="Int32" />
+    <Property Name="Documento" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+    <Property Name="idEstado" Type="Int32" Nullable="false" />
+    <Property Name="FAlta" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="FModifEstado" Type="DateTime" Precision="3" />
+    <Property Name="idTramitadora" Type="Int32" Nullable="false" />
+    <Property Name="Vitacora" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tbEstado" Relationship="EmpresaModel.FK_tbServicio_tbEstado" FromRole="tbServicio" ToRole="tbEstado" />
+    <NavigationProperty Name="tbListaMaterialesServicio" Relationship="EmpresaModel.FK_tbListaMaterialesServicio_tbServicio" FromRole="tbServicio" ToRole="tbListaMaterialesServicio" />
+    <NavigationProperty Name="tbTrabajador" Relationship="EmpresaModel.FK_tbServicio_tbTrabajador" FromRole="tbServicio" ToRole="tbTrabajador" />
+    <NavigationProperty Name="tbTramitadora" Relationship="EmpresaModel.FK_tbServicio_tbTramitadora" FromRole="tbServicio" ToRole="tbTramitadora" />
+  </EntityType>
+  <EntityType Name="tbTrabajador">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Apellido" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="NIF" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Correo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tbServicio" Relationship="EmpresaModel.FK_tbServicio_tbTrabajador" FromRole="tbTrabajador" ToRole="tbServicio" />
+  </EntityType>
+  <EntityType Name="tbTramitadora">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tbServicio" Relationship="EmpresaModel.FK_tbServicio_tbTramitadora" FromRole="tbTramitadora" ToRole="tbServicio" />
+  </EntityType>
+  <Association Name="FK_tbServicio_tbEstado">
+    <End Type="EmpresaModel.tbEstado" Role="tbEstado" Multiplicity="1" />
+    <End Type="EmpresaModel.tbServicio" Role="tbServicio" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbEstado">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tbServicio">
+        <PropertyRef Name="idEstado" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbListaMaterialesServicio_tbMaterial">
+    <End Type="EmpresaModel.tbMateriales" Role="tbMateriales" Multiplicity="1" />
+    <End Type="EmpresaModel.tbListaMaterialesServicio" Role="tbListaMaterialesServicio" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbMateriales">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tbListaMaterialesServicio">
+        <PropertyRef Name="idMaterial" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbListaMaterialesServicio_tbServicio">
+    <End Type="EmpresaModel.tbServicio" Role="tbServicio" Multiplicity="1" />
+    <End Type="EmpresaModel.tbListaMaterialesServicio" Role="tbListaMaterialesServicio" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbServicio">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tbListaMaterialesServicio">
+        <PropertyRef Name="idServicio" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbMaterialesAsignados_tbMateriales">
+    <End Type="EmpresaModel.tbMateriales" Role="tbMateriales" Multiplicity="1" />
+    <End Type="EmpresaModel.tbMaterialesAsignados" Role="tbMaterialesAsignados" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbMateriales">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tbMaterialesAsignados">
+        <PropertyRef Name="idMaterial" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbServicio_tbTrabajador">
+    <End Type="EmpresaModel.tbTrabajador" Role="tbTrabajador" Multiplicity="0..1" />
+    <End Type="EmpresaModel.tbServicio" Role="tbServicio" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbTrabajador">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tbServicio">
+        <PropertyRef Name="idTrabajador" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbServicio_tbTramitadora">
+    <End Type="EmpresaModel.tbTramitadora" Role="tbTramitadora" Multiplicity="1" />
+    <End Type="EmpresaModel.tbServicio" Role="tbServicio" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbTramitadora">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tbServicio">
+        <PropertyRef Name="idTramitadora" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

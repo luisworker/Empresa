@@ -1,0 +1,150 @@
+﻿@model Domain.Model.ViewModels.AsignarMatrialViewModels
+
+<div class="row">
+    <h4>Asignar Matriales</h4>
+    <hr />
+    <form id="frm">
+        
+        <div>
+            <dl class="dl-horizontal" style="float:left">
+                <dt>@Html.DisplayNameFor(model => model.Material.Codigo)</dt>
+                <dd>@Html.DisplayFor(model => model.Material.Codigo)</dd>
+                <dt>@Html.DisplayNameFor(model => model.Material.Nombre)</dt>
+                <dd>@Html.DisplayFor(model => model.Material.Nombre)</dd>
+                <dt>@Html.DisplayNameFor(model => model.Material.Descripcion)</dt>
+                <dd>@Html.DisplayFor(model => model.Material.Descripcion)</dd>
+                <dt>@Html.DisplayNameFor(model => model.Material.CantTotal)</dt>
+                <dd>@Html.DisplayFor(model => model.Material.CantTotal)</dd>
+                <dt>@Html.DisplayNameFor(model => model.Material.CantDisponible)</dt>
+                <dd>@Html.DisplayFor(model => model.Material.CantDisponible)</dd>
+            </dl>
+            <dl class="dl-horizontal" style="float:right">
+                <dt>@Html.DisplayName("Trabajador")</dt>
+                <dd>@Html.DropDownList("sTrabajadores", (IEnumerable<SelectListItem>)ViewBag.Trabajadores, "--Seleciona Trabajador--", new { @class = "form-control" })</dd>
+
+                <dt>@Html.DisplayName("Asignados")</dt>
+                <dd><label id="lblMaterialAsignados"></label></dd>
+
+                <dt>@Html.DisplayName("Asignar")</dt>
+                <dd><input class="form-control" id="cantidad" name="cantidad" type="number" value="0" min=0  step="1" placeholder="(min 0 - max @Model.Material.CantDisponible)" /></dd>
+
+                <dd>
+                    <input type="button" id="Asignar" value="Asignar" />
+                    <input type="button" id="Retirar" value="Retirar" />
+                </dd>
+            </dl>
+
+        </div>
+    </form>
+</div>
+<p>
+
+	@Html.ActionLink("Back to List", "Index")
+	@Html.ActionLink("Editar", "Detalles",new {Codigo= @Model.Material.Codigo})
+</p>
+@section scripts{
+	<script>
+        $(document).ready(function () {
+
+            Mostrar();
+            function Mostrar() {
+                var data;
+                $.ajax({
+                    url: "CantidadMaterial?Codigo=" +@Model.Material.Codigo+"&Trabajador=" + $("#sTrabajadores").val(),
+                    method: "POST",
+                    success: function (data)
+                    {
+                        $("#lblMaterialAsignados").text(data);
+                    }
+                })
+                return data;
+            }
+            $("#sTrabajadores").change(function () {
+                ValidarTrabajador();
+                Mostrar();
+            });
+
+            //$("#cantidad").blur(() => { Validar() })
+            $("#Asignar").click(function () {
+                if (ValidarTrabajador() && ValidarCantidad(true))
+                {
+
+                    var trabajador = $("#sTrabajadores").val();
+                    var cantidad = $("#cantidad").val();
+                    //e.preventDefault();
+                    parametros = { "codigo":@Model.Material.Codigo, "sTrabajadores": trabajador, "cantidad": cantidad };
+                    url =  "@Url.Content("Asignar")";
+                    $.post(url, parametros, function (data) {
+                        if (data=="1")
+                        {
+                            document.location.href = "@Url.Content("Index")";
+						} else {
+                             document.location.href = "@Url.Content("Asignar?Codigo"+Model.Material.Codigo)";
+						}
+                    })
+                }
+            })
+            $("#Retirar").click(() => {
+                if (ValidarTrabajador() && ValidarCantidad(false))
+                {
+                    var trabajador = $("#sTrabajadores").val();
+                    var cantidad = $("#cantidad").val();
+                    //e.preventDefault();
+                    parametros = { "codigo":@Model.Material.Codigo, "sTrabajadores": trabajador, "cantidad": cantidad };
+                    url =  "@Url.Content("Asignar")";
+                    $.post(url, parametros, function (datos) {
+                        if (datos == 1) {
+                            document.location.href = "@Url.Content("Index")";
+						} else {
+                            document.location.href = "@Url.Content("Asignar")?Codigo"+@Model.Material.Codigo;
+						}
+                    })
+                }
+            })
+            function ValidarCantidad(asignar) {
+                var l;
+
+                if (asignar) {
+
+					if (($("#cantidad").val() >@Model.Material.CantDisponible) || ($("#cantidad").val() < 1))
+                    {
+                            alert("Cantidad Incorecta");
+                            $("#cantidad").css("border-color", "red")
+                            l = false;
+                    }
+                    else{
+                            $("#cantidad").css("border-color", "rgba(221, 221, 221, 1)")
+                            l = true;
+                    }
+                } else {
+					if (($("#cantidad").val() < Mostrar()) || ($("#cantidad").val() <1))
+                    {
+						alert("Cantidad Incorecta");
+                            $("#cantidad").css("border-color", "red")
+                            l = false;
+                    }
+                    else{
+                            $("#cantidad").css("border-color", "rgba(221, 221, 221, 1)")
+                            l = true;
+                    }
+			    }
+			        return l;
+                 }
+            function ValidarTrabajador(){
+                var l;
+
+                if ($("#sTrabajadores").val() =="")
+                {
+                    alert("escoja trabajador");
+					$("#sTrabajadores").css("border-color", "red")
+					l = false;
+                } else {
+					$("#sTrabajadores").css("border-color", "rgba(221, 221, 221, 1)")
+					l = true;
+                }
+                return l
+            }
+
+        })
+	</script>
+}

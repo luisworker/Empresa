@@ -1,0 +1,111 @@
+﻿@model Domain.Model.ViewModels.MaterialViewModels
+
+@{
+	ViewBag.Title = "Detalles";
+}
+
+<h2>Detalles</h2>
+
+<div>
+	<h4>Material</h4>
+	<hr />
+	<div class="col-lg-6" style="float:left">
+		<dl class="dl-horizontal">
+			<dt>
+				@Html.DisplayNameFor(model => model.Codigo)
+			</dt>
+
+			<dd>
+				@Html.DisplayFor(model => model.Codigo)
+			</dd>
+
+			<dt>
+				@Html.DisplayNameFor(model => model.Nombre)
+			</dt>
+
+			<dd>
+				@Html.DisplayFor(model => model.Nombre)
+			</dd>
+
+			<dt>
+				@Html.DisplayNameFor(model => model.Descripcion)
+			</dt>
+
+			<dd>
+				@Html.DisplayFor(model => model.Descripcion)
+			</dd>
+
+			<dt>
+				@Html.DisplayNameFor(model => model.CantDisponible)
+			</dt>
+
+			<dd>
+				@Html.DisplayFor(model => model.CantDisponible)
+			</dd>
+
+			<dt>
+				@Html.DisplayNameFor(model => model.CantTotal)
+			</dt>
+
+			<dd>
+				@Html.DisplayFor(model => model.CantTotal)
+			</dd>
+			<dt>
+
+			</dt>
+
+			<dd>
+				<input type="button" class="form-control" value="Distribución" id="Distribucion" onclick="Distri(@Model.Codigo);" />
+			</dd>
+
+		</dl>
+	</div>
+	<div class="col-lg-6" style="float:right">
+		<dl id="listaTrabajadores">
+		</dl>
+	</div>
+</div>
+<p>
+	@Html.ActionLink("Edit", "Edit", new { Codigo = Model.Codigo }) |
+	@Html.ActionLink("Back to List", "Index")
+</p>
+@section scripts{
+	<script>
+		function Distri(codigo) {
+
+			var Url ="@Url.Content("Distribucion")";
+			fetch(Url,{
+				
+				method: "POST",
+				body: JSON.stringify({
+					Codigo:codigo
+				}),
+				headers: {
+					"Acept":"Applications/json",
+					"Content-Type":"Applications/json"
+				}
+			}).then((response) => {
+				if (response.ok) {
+					var a = JSON.parse(response)
+					for (var i = 0; i < a.length; i++) {
+						var dt=document.createElement('dt');
+						var dttext = document.createTextNode(a(i).Nombre);
+						dt.appendChild(dttext);
+						var dd = document.createElement('dd');
+						var ddtext = document.createTextNode(a(i).Cantidad);
+						dd.appendChild(ddtext);
+						$("#listaTrabajadores").appendChild(dt);
+						$("#listaTrabajadores").appendChild(dd);
+					}
+				} else {
+					alert(JSON.parse( response.json) + "bujajaj");
+				}
+			})
+
+
+		}
+
+	</script>
+}
+
+	

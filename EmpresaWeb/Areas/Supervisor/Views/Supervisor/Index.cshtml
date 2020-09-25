@@ -1,0 +1,268 @@
+﻿@model IEnumerable<Domain.Model.ServiciosViewModels>
+
+<div>
+    <div>
+        <div class="form-group" style=" float:left">
+            @using (Html.BeginForm("Index", "Supervisor", FormMethod.Post, new { id = "FormFiltro" }))
+            {@Html.AntiForgeryToken();
+            <div class="form-horizontal">
+                <h4>Trabajador</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div>
+                        No. Reporte:
+                    </div>
+                    <div class="col-md-10">
+                        <input class="form-control" name="IdReporte" id="IdReporte" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div>
+                        Trabajador:
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DropDownList("IdTrabajadores", (List<SelectListItem>)ViewBag.Trabajadores, "--Escoge Trabajador--", new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div>
+                        Estado:
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DropDownList("Estado", (List<SelectListItem>)ViewBag.Estados, "--Escoge Estado--", new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div>
+                        Fecha de Alta:
+                    </div>
+                    <div class="col-md-10">
+                        <input class="form-control" id="FAlta" type="date" name="FAlta" />
+
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div>
+                        Fecha de Modificacion:
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DropDownList("IdTramitadora", (List<SelectListItem>)ViewBag.Tramitadora, "--Escoge Tramitadora--", new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div>
+                        <input type="button" value="Filtrar" class="btn btn-default" id="Filtrar" />
+
+                        <input type="button" value="Limpiar" data-loading-text="" class="btn btn-default" id="Limpiar" />
+                        <input type="button" value="Crear" class="btn btn-default" id="Crear" onclick="document.location.href='@Url.Content("Supervisor/CrearServicio")'" />
+
+                    </div>
+                </div>
+            </div>
+        }
+
+        </div>
+        @{if (ViewBag.msj != "")
+            {
+                <div class="form" style="float:right" id="msj">
+                    <h4 class="" style="text-decoration-color:darkcyan">@ViewBag.msj </h4>
+                </div>
+            }
+        }
+
+        <div>
+            @if (Model != null)
+            {
+                if (Model.Count() < 1)
+                {
+                    <div class="row">
+                        <p>
+                            No existen Elementos en esta búsqueda
+                        </p>
+                    </div>
+                }
+                if (Model.Count() > 0)
+                {
+
+
+                    <p id="Mensaje" hidden="hidden">
+                        Resultados de la Busqueda
+                    </p>
+                    <table class="table">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IdReporte)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TextTrabajador)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TextEstado)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FAlta)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TextTramitadora)
+                            </th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IdReporte)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TextTrabajador)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TextEstado)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FAlta)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TextTramitadora)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Editar", "EditarServicio", new { IdReporte = item.IdReporte }) |
+                                    <a class="detalles_Ver" href="#">Ver</a> |
+                                    <a class="Eliminar_Serv" href="">Eliminar</a>
+                                </td>
+                            </tr>
+
+
+                        }
+
+                    </table>
+                }
+            }
+        </div>
+
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="exampleModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" id="header_detalles">
+            </div>
+            <div class="modal-body" id="modal_body">
+                cdsfs
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $(".detalles_Ver").click(function () {
+
+               // var a = $(this).parents("td").map(function () { return this.tagName })
+                var a = $(this).closest("tr").find("td").eq(0).html();
+                alert(a);
+                //padre = hijo1.closest("div");
+               
+                   // .find("td").eq(0));
+                $.ajax({
+                    url: "Supervisor/Detalles?IdReporte=" + a,
+                 
+                    success: function (data) {
+
+                        $("#modal_body").html(data);
+                        $("#exampleModal").modal("show");
+                    }
+                })
+               
+
+
+
+            })
+            $("#Filtrar").click(function () {
+
+
+                $("#FormFiltro").submit();
+                //parametros = $("#FormFiltro").serialize();
+
+
+            })
+            $("#IdReporte").blur(function () {
+                var text = $(this).val();
+                var reg = /^[0-9]*$/;
+                if (!reg.test(text)) {
+                    $(this).css("border-color", "red");
+                    $("#Filtrar").prop("disabled", true);
+                }
+                else {
+                    $("#Filtrar").prop("disabled", false);
+                    $(this).css("border-color", "rgba(221, 221, 221, 1)");
+                }
+
+                if ($(this).val() != "") {
+                    $("#IdTrabajadores").prop("disabled", true);
+                    $("#Estado").prop("disabled", true);
+                    $("#FAlta").prop("disabled", true);
+                    $("#FModifEstado").prop("disabled", true);
+                } else {
+                    $("#IdTrabajadores").prop("disabled", false);
+                    $("#Estado").prop("disabled", false);
+                    $("#FAlta").prop("disabled", false);
+                    $("#FModifEstado").prop("disabled", false);
+                }
+
+            })
+
+
+            $("#Limpiar").click(function ()
+            {
+                $("#msj").prop("hidden", false);
+
+                //$("#Trabajadores").prop("", false)
+                //$("#Estado").prop("disabled", false)
+                //$("#FAlta").prop("disabled", false)
+                //$("#FModifEstado").prop("disabled", false)
+
+            })
+
+            $(".Eliminar_Serv").click(function ()
+            {
+                if (confirm("¿Estas serguro que quieres eliminar?")) {
+                    valor = $(this).closest("tr").find("td").eq(0).html();
+                    $.ajax({
+                        url: "Supervisor/Eliminar?IdReporte=" + valor,
+                        method: "POST",
+
+                        success: function (data) { }
+
+
+                    })
+                } else {
+                    parametros = $("#form").serialize();
+                    url = document.location.href = "@Url.Content("Supervisor/IndexServicio")";
+                    $.post(url, parametros, function (data) { });
+
+
+
+
+                }
+
+            })
+        })
+    </script>
+}
+

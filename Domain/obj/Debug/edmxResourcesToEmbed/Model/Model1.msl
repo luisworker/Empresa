@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="EmpresaModelStoreContainer" CdmEntityContainer="EmpresaEntities">
+    <EntitySetMapping Name="tbEstado">
+      <EntityTypeMapping TypeName="EmpresaModel.tbEstado">
+        <MappingFragment StoreEntitySet="tbEstado">
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbListaMaterialesServicio">
+      <EntityTypeMapping TypeName="EmpresaModel.tbListaMaterialesServicio">
+        <MappingFragment StoreEntitySet="tbListaMaterialesServicio">
+          <ScalarProperty Name="fecha" ColumnName="fecha" />
+          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+          <ScalarProperty Name="idMaterial" ColumnName="idMaterial" />
+          <ScalarProperty Name="idServicio" ColumnName="idServicio" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbMateriales">
+      <EntityTypeMapping TypeName="EmpresaModel.tbMateriales">
+        <MappingFragment StoreEntitySet="tbMateriales">
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbMaterialesAsignados">
+      <EntityTypeMapping TypeName="EmpresaModel.tbMaterialesAsignados">
+        <MappingFragment StoreEntitySet="tbMaterialesAsignados">
+          <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+          <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+          <ScalarProperty Name="idMaterial" ColumnName="idMaterial" />
+          <ScalarProperty Name="idTrabajador" ColumnName="idTrabajador" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbServicio">
+      <EntityTypeMapping TypeName="EmpresaModel.tbServicio">
+        <MappingFragment StoreEntitySet="tbServicio">
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="Vitacora" ColumnName="Vitacora" />
+          <ScalarProperty Name="idTramitadora" ColumnName="idTramitadora" />
+          <ScalarProperty Name="FModifEstado" ColumnName="FModifEstado" />
+          <ScalarProperty Name="FAlta" ColumnName="FAlta" />
+          <ScalarProperty Name="idEstado" ColumnName="idEstado" />
+          <ScalarProperty Name="Documento" ColumnName="Documento" />
+          <ScalarProperty Name="idTrabajador" ColumnName="idTrabajador" />
+          <ScalarProperty Name="idReporte" ColumnName="idReporte" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbTrabajador">
+      <EntityTypeMapping TypeName="EmpresaModel.tbTrabajador">
+        <MappingFragment StoreEntitySet="tbTrabajador">
+          <ScalarProperty Name="Roll" ColumnName="Roll" />
+          <ScalarProperty Name="Correo" ColumnName="Correo" />
+          <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+          <ScalarProperty Name="NIF" ColumnName="NIF" />
+          <ScalarProperty Name="Apellido" ColumnName="Apellido" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbTramitadora">
+      <EntityTypeMapping TypeName="EmpresaModel.tbTramitadora">
+        <MappingFragment StoreEntitySet="tbTramitadora">
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

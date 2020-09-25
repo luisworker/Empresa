@@ -1,0 +1,83 @@
+﻿@model Domain.Model.ServiciosViewModels
+@{
+    Layout = null;
+    ViewBag.idReporte = "Datos del Servicio "+Model.IdReporte+" de "+Model.TextTramitadora;
+ }
+    <div style="float:right">
+        <embed src="~/Files/Ejemplo.pdf" width="500" height="375">
+    </div>
+<div>
+    <h4>@ViewBag.idReporte</h4>
+    <hr />
+    
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IdReporte)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdReporte)
+        </dd>
+            
+        <dt>
+            @Html.DisplayNameFor(model => model.TextEstado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TextEstado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TextTramitadora)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TextTramitadora)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FAlta)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FAlta)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FModifEstado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FModifEstado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TextTrabajador)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TextTrabajador)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+
+               
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Vitacora)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Vitacora)
+        </dd>
+
+    </dl>
+    <div><a id="PDF" href="#"><h5>Documento</h5></a></div>
+</div>
+
